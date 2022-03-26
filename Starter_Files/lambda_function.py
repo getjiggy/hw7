@@ -105,35 +105,35 @@ def recommend_portfolio(intent_request):
     investment_amount = get_slots(intent_request)["investmentAmount"]
     risk_level = get_slots(intent_request)["riskLevel"]
     source = intent_request["invocationSource"]
-    try:
-        if source == "DialogCodeHook":
-            # Perform basic validation on the supplied input slots.
-            # Use the elicitSlot dialog action to re-prompt
-            # for the first violation detected.
-    
-            ### YOUR DATA VALIDATION CODE STARTS HERE ###
-            validation_result = validate_data(age, investment_amount, intent_request)
-            if not validation_result['isValid']:
-                slots[validation_result["violatedSlot"]] = None
-                return elicit_slot(intent_request['sessionAttributes'], intent_request['currentIntent']['name'], intent_request['currentIntent']['slots'], validation['violatedSlot'], validation['message'])
-    
-            ### YOUR DATA VALIDATION CODE ENDS HERE ###
-    
-            # Fetch current session attibutes
-            output_session_attributes = intent_request["sessionAttributes"]
-    
-            return delegate(output_session_attributes, get_slots(intent_request))
-    
-        # Get the initial investment recommendation
-    
-        ### YOUR FINAL INVESTMENT RECOMMENDATION CODE STARTS HERE ###
-        responseDict = {
-            "None": "100% bonds (AGG), 0% equities (SPY)",
-            "Low": "60% bonds (AGG), 40% equities (SPY)",
-            "Medium": "40% bonds (AGG), 60% equities (SPY)",
-            "High": "20% bonds (AGG), 80% equities (SPY)"
-        }
-        initial_recommendation = responseDict[risk_level]
+
+    if source == "DialogCodeHook":
+        # Perform basic validation on the supplied input slots.
+        # Use the elicitSlot dialog action to re-prompt
+        # for the first violation detected.
+
+        ### YOUR DATA VALIDATION CODE STARTS HERE ###
+        validation_result = validate_data(age, investment_amount, intent_request)
+        if not validation_result['isValid']:
+            slots[validation_result["violatedSlot"]] = None
+            return elicit_slot(intent_request['sessionAttributes'], intent_request['currentIntent']['name'], intent_request['currentIntent']['slots'], validation['violatedSlot'], validation['message'])
+
+        ### YOUR DATA VALIDATION CODE ENDS HERE ###
+
+        # Fetch current session attibutes
+        output_session_attributes = intent_request["sessionAttributes"]
+
+        return delegate(output_session_attributes, get_slots(intent_request))
+
+    # Get the initial investment recommendation
+
+    ### YOUR FINAL INVESTMENT RECOMMENDATION CODE STARTS HERE ###
+    responseDict = {
+        "None": "100% bonds (AGG), 0% equities (SPY)",
+        "Low": "60% bonds (AGG), 40% equities (SPY)",
+        "Medium": "40% bonds (AGG), 60% equities (SPY)",
+        "High": "20% bonds (AGG), 80% equities (SPY)"
+    }
+    initial_recommendation = responseDict[risk_level]
     
         ### YOUR FINAL INVESTMENT RECOMMENDATION CODE ENDS HERE ###
     
